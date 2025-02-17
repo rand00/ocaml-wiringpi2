@@ -1,4 +1,5 @@
 (lang dune 3.17)
+(using ctypes 0.3)
 
 (name wiringpi2)
 
