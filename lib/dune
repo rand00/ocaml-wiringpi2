@@ -9,14 +9,13 @@
   (external_library_name libwiringPi)
   ;; < external_library_name was found using 'ldd gpio'
   ;;(external_library_name libwiringPiDev)
-  ;; < maybe this is needed too/instead?
-  ;; (build_flags_resolver pkg_config)
+  ;; < this is only for some specific extra board-support
+  ;; (build_flags_resolver pkg_config) ;;<- could work if was installed via some pkg-manager
   (build_flags_resolver
    (vendored
     (c_flags :standard)
     (c_library_flags :standard)
     ))
-  ;; < this should work as wiringPi was installed via the .deb 
   (headers (include "wiringPi.h" "wiringPiI2C.h" "wiringPiSPI.h"))
   ;; < these are a subset of wiringPi headers present in /usr/include/ 
   (type_description
