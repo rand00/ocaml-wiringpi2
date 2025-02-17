@@ -1,5 +1,6 @@
 (library
  (name wiringpi2)
+ (public_name wiringpi2)
  (flags (:standard
          (-w -27-33-26-9-21-32)
          ))
@@ -9,7 +10,12 @@
   ;; < external_library_name was found using 'ldd gpio'
   ;;(external_library_name libwiringPiDev)
   ;; < maybe this is needed too/instead?
-  (build_flags_resolver pkg_config)
+  ;; (build_flags_resolver pkg_config)
+  (build_flags_resolver
+   (vendored
+    (c_flags :standard)
+    (c_library_flags :standard)
+    ))
   ;; < this should work as wiringPi was installed via the .deb 
   (headers (include "wiringPi.h" "wiringPiI2C.h" "wiringPiSPI.h"))
   ;; < these are a subset of wiringPi headers present in /usr/include/ 
@@ -17,7 +23,8 @@
    (instance Types)
    (functor Type_description))
   (function_description
-   (concurrency sequential) ;;< I guess this is fast - possibly try 'unlocked'
+   (concurrency sequential)
+   ;;< I guess this is fast - possibly try 'unlocked' - will only make a difference if using Thread.t?
    (instance Functions)
    (functor Function_description))
   (generated_types Types_generated)
