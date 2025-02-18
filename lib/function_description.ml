@@ -28,6 +28,18 @@ module Functions (F : Ctypes.FOREIGN) = struct
     let delay = foreign "delay" (uint @-> returning void)
     let delayMicroseconds = foreign "delayMicroseconds" (uint @-> returning void)
     
+    (* Interrupts *)
+      
+    let waitForInterrupt = foreign "waitForInterrupt" (int @-> int @-> returning int)
+    (*> Note based on comments here: https://github.com/yallop/ocaml-ctypes/issues/364
+      .. also see here how to coerce functions
+    *)
+    let wiringPiISR = foreign "wiringPiISR"
+        (int @-> int @-> (Foreign.funptr Ctypes.(void @-> returning void))
+         @-> returning int)
+    let wiringPiISRStop = foreign "wiringPiISRStop" (int @-> returning int)
+    let waitForInterruptClose = foreign "waitForInterruptClose" (int @-> returning int)
+
   end
 
   module WiringPiSPI = struct
