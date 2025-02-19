@@ -4,6 +4,10 @@
  (flags (:standard
          (-w -27-33-26-9-21-32)
          ))
+ (libraries
+  ctypes
+  ctypes.foreign
+  )
  (ctypes
   ;; wiringPi was installed from github/master (v3.14) @ debian 11 using linux kernel 6.1.21
   (external_library_name libwiringPi)
