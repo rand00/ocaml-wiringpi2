@@ -35,8 +35,12 @@ module Functions (F : Ctypes.FOREIGN) = struct
       .. also see here how to coerce functions
     *)
     let wiringPiISR = foreign "wiringPiISR"
-        (int @-> int @-> (Foreign.funptr Ctypes.(void @-> returning void))
-         @-> returning int)
+        (int @-> int @-> (
+            Foreign.funptr
+              ~thread_registration:true
+              ~runtime_lock:true (*goto test; dunno if need *)
+              Ctypes.(void @-> returning void)
+          ) @-> returning int)
     let wiringPiISRStop = foreign "wiringPiISRStop" (int @-> returning int)
     let waitForInterruptClose = foreign "waitForInterruptClose" (int @-> returning int)
 
