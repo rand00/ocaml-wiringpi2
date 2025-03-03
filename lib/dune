@@ -18,7 +18,7 @@
   (build_flags_resolver
    (vendored
     (c_flags :standard)
-    (c_library_flags :standard)
+    (c_library_flags -Wl,--no-as-needed -lwiringPi)
     ))
   (headers (include "wiringPi.h" "wiringPiI2C.h" "wiringPiSPI.h"))
   ;; < these are a subset of wiringPi headers present in /usr/include/ 
