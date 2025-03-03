@@ -31,8 +31,11 @@ module Functions (F : Ctypes.FOREIGN) = struct
     (* Interrupts *)
       
     let waitForInterrupt = foreign "waitForInterrupt" (int @-> int @-> returning int)
-      
-    (*> Note based on comments here: https://github.com/yallop/ocaml-ctypes/issues/364 *)
+
+    (*> Note: we need thread-registration as WiringPi runs each ocaml-callback
+        in a separate pthread. Therefore you also need to be aware of handling
+        potential shared state correctly.
+    *)
     let wiringPiISR = foreign "wiringPiISR"
         (int @-> int @-> (
             Foreign.funptr
