@@ -31,14 +31,17 @@ module Functions (F : Ctypes.FOREIGN) = struct
     (* Interrupts *)
       
     let waitForInterrupt = foreign "waitForInterrupt" (int @-> int @-> returning int)
-    (*> Note based on comments here: https://github.com/yallop/ocaml-ctypes/issues/364
-      .. also see here how to coerce functions
-    *)
+      
+    (*> Note based on comments here: https://github.com/yallop/ocaml-ctypes/issues/364 *)
     let wiringPiISR = foreign "wiringPiISR"
         (int @-> int @-> (
             Foreign.funptr
               ~thread_registration:true
-              ~runtime_lock:true (*goto test; dunno if need *)
+              ~runtime_lock:true
+              (*< goto test; dunno if need - might gain performance if no lock
+                .. (note that in my usecase I don't touch shared state, but have
+                    specific state per callback, and use Zmq to sync all events)
+              *)
               Ctypes.(void @-> returning void)
           ) @-> returning int)
     let wiringPiISRStop = foreign "wiringPiISRStop" (int @-> returning int)
@@ -56,11 +59,9 @@ module Functions (F : Ctypes.FOREIGN) = struct
       
     let close = foreign "wiringPiSPIClose" (int @-> returning int)
 
-    (*> goto test how dataRW works; I guess it reads uchar array (for sending),
-        and then also writes to it afterwards (for receiving)?*)
     let dataRW = foreign "wiringPiSPIDataRW" (int @-> ptr uchar @-> int @-> returning int)
 
-    (*Note there is some newer interface too - dunno what 'number' is there..*)
+    (*Note there is some newer interface too where you can choose SPI device*)
 
   end
       
